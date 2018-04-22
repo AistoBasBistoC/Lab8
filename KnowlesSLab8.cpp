@@ -81,7 +81,7 @@ int main()
 
 		if (Glad2.CurrentHealth > 0)
 		{
-			outcome = takeTurn(Glad2, Glad2);
+			outcome = takeTurn(Glad2, Glad1);
 			turncount++;
 		}
 	}
