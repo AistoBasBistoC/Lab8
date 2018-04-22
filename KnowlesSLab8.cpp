@@ -87,7 +87,7 @@ int main()
 	}
 
 	//outcomes
-	if (outcome == 22)
+	if (outcome == 1)
 	{
 		//if Glad1 is killed
 		if (Glad1.CurrentHealth <= 0)
@@ -244,14 +244,14 @@ int takeTurn(Gladiator A, Gladiator &B)
 	//if both fighters are still alive
 	if (A.CurrentHealth > 0 && B.CurrentHealth > 0)
 	{
-		fightOutcome = 11;
+		fightOutcome = 0;
 		cout << "." << endl;
 	}
 
 	//if B is killed
 	else if (B.CurrentHealth <= 0)
 	{
-		fightOutcome = 22;
+		fightOutcome = 1;
 		cout << B.Name << " has been slain." << endl;
 	}
 
