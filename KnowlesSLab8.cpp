@@ -193,7 +193,7 @@ Gladiator createGladiator(string name)
 
 		if (accept == 1)
 		{
-			return Gladiator();
+			return TempGlad;
 		}
 	} while (accept == 0);
 }
