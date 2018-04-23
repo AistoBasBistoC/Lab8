@@ -24,88 +24,102 @@ struct Gladiator
 Gladiator createGladiator(string); //create gladiator function | string argument
 void showStats(Gladiator); //show stats function | struct argument
 int takeTurn(Gladiator, Gladiator&); //fight turn function | arguments: attacker struct, defender struct pointer
+void resetFight(Gladiator&, Gladiator&); //resets fighter's health to their respective max health values so they can fight again | arguments: both struct pointers
 
 
 int main()
 {
 	Gladiator Glad1;
 	Gladiator Glad2;
-	Gladiator *G1ptr; //pointer for Glad1
-	Gladiator *G2ptr; //pointer for Glad2
-	G1ptr = &Glad1;
-	G2ptr = &Glad2;
 	string name;
 	int outcome = 2112; //used to determine fight outcome, initialized as 2112 to prevent unintended outcome
+	int choice; //choice var used to redo fights or exit the program.
 
 	srand(time(NULL)); //sets seed for RNG
 
-	//intro + prompt for first fighter
-	cout << "You will be hosting a great fight!!!" << endl << endl;
-	cout << "But first, you need fighters." << endl << endl;
-	cout << "Give me a name for your first fighter." << endl << endl << ">> ";
-	cin >> name;
-
-	//create the first fighter
-	Glad1 = createGladiator(name);
-
-	cout << endl << "Excellent, now give me a name for your second fighter." << endl << endl << ">> ";
-	cin >> name;
-
-	//create the second fighter
-	Glad2 = createGladiator(name);
-
-	//begin the fight!
-	cout << "Perfect! Now that we have our fighters, COMMENCE THE BATTLE!!" << endl << endl;
-	system("pause");
-
-	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-
-	/* added symbols and phrases to illustrate the fight:
-	**
-	** . = completed turn 
-	** "_ Crits!" = critical hit 
-	** "_ Evades!" = successful evade 
-	** "_ is slain" = _ lost the fight.
-	**
-	*/
-	cout << "Fight Timeline:" << endl << endl;
-
-	int turncount = 0; //turn counter
-	while (Glad1.CurrentHealth > 0 && Glad2.CurrentHealth > 0)
+	do
 	{
-		if (Glad1.CurrentHealth > 0)
-		{
-			outcome = takeTurn(Glad1, Glad2);
-			turncount++;
-		}
+		//intro + prompt for first fighter
+		cout << "You will be hosting a great fight!!!" << endl << endl;
+		cout << "But first, you need fighters." << endl << endl;
+		cout << "Give me a name for your first fighter." << endl << endl << ">> ";
+		cin >> name;
 
-		if (Glad2.CurrentHealth > 0)
-		{
-			outcome = takeTurn(Glad2, Glad1);
-			turncount++;
-		}
-	}
+		//create the first fighter
+		Glad1 = createGladiator(name);
 
-	//outcomes
-	if (outcome == 1)
-	{
-		//if Glad1 is killed
-		if (Glad1.CurrentHealth <= 0)
-		{
-			cout << endl << endl << "The fight has ended!!!" << endl << endl << Glad2.Name << "is victorious!!!" << endl;
-			cout << Glad2.Name << "'s Health: " << Glad2.CurrentHealth << endl;
-			cout << "The battle lasted " << turncount << " turns." << endl << endl << endl;
-		}
+		cout << endl << "Excellent, now give me a name for your second fighter." << endl << endl << ">> ";
+		cin >> name;
 
-		//if Glad2 is killed
-		else if (Glad2.CurrentHealth <= 0)
+		//create the second fighter
+		Glad2 = createGladiator(name);
+
+		//begin the fight!
+		do
 		{
-			cout << endl << endl << "The fight has ended!!!" << endl << endl << Glad1.Name << "is victorious!!!" << endl;
-			cout << Glad1.Name << "'s Health: " << Glad1.CurrentHealth << endl;
-			cout << "The battle lasted " << turncount << " turns." << endl << endl << endl;
-		}
-	}
-	system("pause");
+			cout << "Perfect! Now that we have our fighters, COMMENCE THE BATTLE!!" << endl << endl;
+			system("pause");
+
+			cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+
+			/* added symbols and phrases to illustrate the fight:
+			**
+			** . = completed turn
+			** "_ Crits!" = critical hit
+			** "_ Evades!" = successful evade
+			** "_ is slain" = _ lost the fight.
+			**
+			*/
+			cout << "Fight Timeline:" << endl << endl;
+
+			int turncount = 0; //turn counter
+			while (Glad1.CurrentHealth > 0 && Glad2.CurrentHealth > 0)
+			{
+				if (Glad1.CurrentHealth > 0)
+				{
+					outcome = takeTurn(Glad1, Glad2);
+					turncount++;
+				}
+
+				if (Glad2.CurrentHealth > 0)
+				{
+					outcome = takeTurn(Glad2, Glad1);
+					turncount++;
+				}
+			}
+
+			//outcomes
+			if (outcome == 1)
+			{
+				//if Glad1 is killed
+				if (Glad1.CurrentHealth <= 0)
+				{
+					cout << endl << endl << "The fight has ended!!!" << endl << endl << Glad2.Name << " is victorious!!!" << endl;
+					cout << Glad2.Name << "'s Health: " << Glad2.CurrentHealth << endl;
+					cout << "The battle lasted " << turncount << " turns." << endl << endl << endl;
+				}
+
+				//if Glad2 is killed
+				else if (Glad2.CurrentHealth <= 0)
+				{
+					cout << endl << endl << "The fight has ended!!!" << endl << endl << Glad1.Name << " is victorious!!!" << endl;
+					cout << Glad1.Name << "'s Health: " << Glad1.CurrentHealth << endl;
+					cout << "The battle lasted " << turncount << " turns." << endl << endl << endl;
+				}
+			}
+			system("pause");
+
+			//ask user if they would like to redo the fight with new fighters or the same fighters, or exit the program.
+			cout << endl << endl << "Well, that was quite a battle!" << endl << endl;
+			cout << "What would you like to do? Input the corresponding option." << endl << endl;
+			cout << "1) Rematch with the same fighters." << endl;
+			cout << "2) Create new fighters and fight again." << endl;
+			cout << "3) Exit the program." << endl << endl << ">> ";
+			cin >> choice;
+			resetFight(Glad1, Glad2);
+		} while (choice == 1);
+	} while (choice == 2);
+	return 0;
 }
 
 
@@ -222,7 +236,7 @@ int takeTurn(Gladiator A, Gladiator &B)
 	{
 		A.minDmg = A.minDmg * 2;
 		A.dmgRnge = A.dmgRnge * 2;
-		cout << A.Name << "Crits!!" << endl;
+		cout << A.Name << " Crits!!" << endl;
 	}
 
 	//now roll for damage
@@ -234,7 +248,7 @@ int takeTurn(Gladiator A, Gladiator &B)
 	if (evadeRoll <= B.Evasion)
 	{
 		dmgRoll = 0; //negate damage
-		cout << B.Name << "Evades!!" << endl;
+		cout << B.Name << " Evades!!" << endl;
 	}
 
 	//now B takes the hit (if any)
@@ -256,4 +270,11 @@ int takeTurn(Gladiator A, Gladiator &B)
 	}
 
 	return fightOutcome;
+}
+
+//reset fight function
+void resetFight(Gladiator &A, Gladiator &B)
+{
+	A.CurrentHealth = A.MaxHealth;
+	B.CurrentHealth = B.MaxHealth;
 }
